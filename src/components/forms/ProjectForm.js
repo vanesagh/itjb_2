@@ -42,7 +42,7 @@ export default function ProjectForm ({ onSubmit, editValues }) {
   })
 
   const { control, watch, reset, handleSubmit } = useForm({
-    defaultValues,
+    defaultValues: editValues || defaultValues,
     resolver: yupResolver(projectFormSchema),
     mode: 'all',
   })

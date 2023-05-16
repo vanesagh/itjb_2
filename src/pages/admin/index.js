@@ -1,10 +1,12 @@
 import PageDescription from "@/components/PageDescription";
 import ProjectItem from "@/components/ProjectItem";
 import AddNewProjectModal from "@/components/modals/AddNewProjectModal";
+import EditProjectModal from "@/components/modals/EditProjectModal";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function AdminPage(){
+    const [editProject, setEditProject]= useState()
     const [isNewProjectModalVisible, setIsNewProjectModalVisible]=useState(false)
     const [projects, setProjects] = useState([])
     useEffect(()=> {
@@ -12,9 +14,20 @@ export default function AdminPage(){
     }, [])
 
     const handleOnSubmit = values =>{
-        setProjects(prev => [...prev, {...values,_id:projects.length+1}])
-        //console.log(values)
+        const tempProjects = Array.from(projects)
+        if (!!values._id){
+            const projectIndex = tempProjects.findIndex(p => p._id === values._id)
+            tempProjects[projectIndex]=values;
+        }
+        else {
+            tempProjects.push({
+                ...values,
+                _id: projects.length+1,
+            })
+        }
+        setProjects(tempProjects)
     }
+    const handleDelete = id => setProjects(prev=>prev.filter(p => p._id !==id))
     
     const fetchProjects = async () => {
         try {
@@ -47,12 +60,20 @@ export default function AdminPage(){
                 <ProjectItem 
                     key={project._id} 
                     project={project}
+                    handleDelete={()=> handleDelete(project._id)}
+                    handleEdit={()=>setEditProject(project)}
                 />
             ))}
             <AddNewProjectModal 
                 open={isNewProjectModalVisible}
                 onClose={() => setIsNewProjectModalVisible(false)}
                 onSubmit={handleOnSubmit}
+            />
+            <EditProjectModal
+              open={!!editProject}
+              onClose={()=>setEditProject()}
+              onSubmit={handleOnSubmit}
+              project={editProject}
             />
         </section>
     );
