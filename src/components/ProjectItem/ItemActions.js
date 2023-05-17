@@ -28,7 +28,7 @@ export default function ItemActions({id, onEdit, onDelete}){
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => router.push(`/projects/${project._id}`)}
+                  onClick={() => router.push(`/projects/${id}`)}
                 >
                     Use Case
                 </Button>

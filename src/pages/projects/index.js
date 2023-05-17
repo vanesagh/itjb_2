@@ -6,10 +6,11 @@ export default function ProjectsPage({projects}){
         <section>
             <PageDescription 
               title="Projects" 
-              description="Here you will find some personal projects"/>
-        {projects.map((project) => (
-        <ProjectItem key={project._id} project={project}/>
-        ))}
+              description="Here you will find some personal projects"
+            />
+            {projects.map((project) => (
+               <ProjectItem key={project._id} project={project}/>
+            ))}
         </section>
     );
 }
